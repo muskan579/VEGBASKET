@@ -1,0 +1,58 @@
+<%- include('../partials/header') %>
+<div class="container my-5">
+  <h2 class="text-center mb-4">Edit Product</h2>
+
+  <!-- Show Validation Errors -->
+  <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        <% errors.forEach(err => { %>
+          <li><%= err.msg %></li>
+        <% }) %>
+      </ul>
+    </div>
+  <% } %>
+  
+  <form action="/admin/products/<%= product._id %>/edit" method="POST" enctype="multipart/form-data">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" name="name" value="<%= product.name %>" class="form-control" required />
+      </div>
+      
+      <div class="col-md-6 mb-3">
+        <label for="category" class="form-label">Category</label>
+        <select name="category" class="form-control" required>
+          <option value="vegetable" <%= product.category === 'vegetable' ? 'selected' : '' %>>Vegetable</option>
+          <option value="dairy" <%= product.category === 'dairy' ? 'selected' : '' %>>Dairy</option>
+        </select>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label for="price" class="form-label">Price (₹)</label>
+        <input type="number" name="price" value="<%= product.price %>" class="form-control" required />
+      </div>
+      
+      <div class="col-md-6 mb-3">
+        <label for="unit" class="form-label">Unit</label>
+        <input type="text" name="unit" value="<%= product.unit %>" class="form-control" placeholder="e.g., kg, liter, bunch, piece" required />
+      </div>
+
+      <div class="col-12 mb-3">
+        <label class="form-label">Change Image (optional)</label>
+        <input type="file" name="image" class="form-control" accept="image/*" />
+      </div>
+
+      <% if (product.imageUrl) { %>
+        <div class="col-12 mb-3">
+          <label class="form-label">Current Image</label><br />
+          <img src="<%= product.imageUrl %>" alt="Product Image" class="img-fluid rounded" style="max-width: 150px;" />
+        </div>
+      <% } %>
+
+      <div class="col-12 text-center">
+        <button type="submit" class="btn btn-primary px-4 mt-2">Update Product</button>
+      </div>
+    </div>
+  </form>
+</div>

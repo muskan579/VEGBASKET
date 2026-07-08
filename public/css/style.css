@@ -1,0 +1,414 @@
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: sans-serif;
+    background: #f9f9f9;
+    color: #333;
+    background-image: url('https://img.freepik.com/premium-vector/vegetables-background-with-text-space-organic-food-poster-vegetables-background_266639-1493.jpg?w=2000');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+  
+  .container {
+    width: 90%;
+    margin: auto;
+    max-width: 1200px;
+    position: sticky;
+    
+  }
+  
+  header {
+    background: #2e7d32;
+    color: white;
+    padding: 1rem 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  header h1 {
+    display: inline;
+  }
+  
+  nav {
+    float: right;
+  }
+  
+  nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: bold;
+  }
+  
+  .hero {
+    background: url('../images/veggies-bg.jpg') no-repeat center center/cover;
+    color: white;
+    text-align: center;
+    padding: 50px 20px;
+    margin-top:150px;
+    
+  }
+  
+  .hero h2 span {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    background-color: rgba(144, 238, 144, 0.516);
+  }
+
+  .hero p{
+    margin-top:10px;
+  }
+  
+  .hero p span{
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    background-color: rgba(144, 238, 144, 0.516);
+    
+  }
+  
+  .btn {
+    background: #66bb6a;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+  }
+  
+  footer {
+    text-align: center;
+    padding: 1rem;
+    color:#f9f9f9;
+  }
+
+  footer span{
+    background-color: rgba(144, 238, 144, 0.516);    
+  }
+
+   .products-section {
+    padding: 40px 0;
+    background:rgba(255, 255, 255, 0.886);
+    position: sticky;
+    overflow: scroll;
+  }
+  
+  .products-section h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    margin-top: 40px;;
+  }
+  
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
+  
+  .product-card {
+    background:rgb(214, 233, 214);
+    width:300px;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .product-card img {
+    width: 100%;
+    max-height: 160px;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+  
+  .product-card h3 {
+    margin-top: 10px;
+    font-size: 1.2rem;
+  }
+  
+  .product-card p {
+    margin: 8px 0;
+    font-weight: bold;
+  }
+  .cart-section {
+    padding: 40px 0;
+    background: #fff;
+  }
+  
+  .cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .cart-table th,
+  .cart-table td {
+    padding: 12px;
+    border: 1px solid #ccc;
+    text-align: center;
+  }
+  
+  .cart-summary {
+    text-align: right;
+    margin-top: 20px;
+  }
+
+/* Main product section styling */
+/*.products-section {
+  padding: 40px 0;
+  background: #fff;
+}
+
+.products-section h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  margin-top:30px;
+  font-size: 2rem;
+  color: #2e7d32;
+}
+
+/* Grid layout for products */
+/* .products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+} */
+
+/* Each product card */
+/* .product-card {
+  flex: 1 1 calc(25% - 20px);
+  background: #f1f8e9;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+  transform: scale(1.03);
+}
+
+.product-card img {
+  width: 100%;
+  max-height: 160px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.product-card h3 {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.product-card p {
+  margin: 8px 0;
+  font-weight: bold;
+  color: #444;
+} */
+
+/* Reuse this for buttons */
+/*.btn {
+  background: #66bb6a;
+  color: white;
+  padding: 10px 16px;
+  text-decoration: none;
+  border-radius: 6px;
+  display: inline-block;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background: #558b2f;
+}
+
+.material-symbols-outlined{
+  position:absolute;
+  left:75.09rem;
+}
+
+ */
+
+ /* public/css/style.css */
+body {
+  background-color: #f8f9fa;
+}
+
+.card-img-top {
+  height: 180px;
+  object-fit: cover;
+}
+
+body {
+  background-color: #f8f9fa;
+}
+
+h1, h2, h3 {
+  color: #343a40;
+}
+
+.navbar-brand {
+  font-weight: bold;
+}
+
+footer {
+  margin-top: 40px;
+}
+
+.product-card {
+  background-color: #fff;
+  padding: 1rem;
+  border: 1px solid #dee2e6;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.product-card:hover {
+  transform: scale(1.02);
+}
+
+.product-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.btn {
+  margin-top: 10px;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+footer {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  text-align: center;
+}
+
+.checkout-form {
+  margin-top: 30px;
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-form .form-group {
+  margin-bottom: 20px;
+}
+
+.checkout-form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.checkout-form input,
+.checkout-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.checkout-form .checkout-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #00aa55;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.checkout-form .checkout-btn:hover {
+  background-color: #007f3d;
+}
+
+/* Typography */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f8f9fa;
+  color: #222222;
+}
+
+/* Buttons */
+.btn-custom {
+  background-color: #fcbf49;
+  color: #222;
+  font-weight: 500;
+  border: none;
+}
+.btn-custom:hover {
+  background-color: #e6ac3a;
+  color: #000;
+}
+
+/* Navbar brand */
+.navbar-brand {
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+/* Section titles */
+h2, h3 {
+  color: #003049;
+}
+
+/* Footer */
+footer {
+  font-size: 0.95rem;
+}
+
+img.rounded-circle {
+  object-fit: cover;
+}
+
+.footer-custom {
+  background-color: #2c3e50;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 0.95rem;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.footer-link {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #1abc9c;
+  text-decoration: underline;
+}
+
+
+
+      

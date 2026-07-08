@@ -1,0 +1,210 @@
+<%- include('partials/header') %>
+
+<div class="container my-5">
+  <h2 class="mb-4 text-center">Your Cart</h2>
+  <div id="cart-items" class="table-responsive">
+    <table class="table table-bordered text-center">
+      <thead class="table-dark">
+        <tr>
+          <th>Name</th>
+          <th>Price (₹)</th>
+          <th>Quantity</th>
+          <th>Subtotal (₹)</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="cart-body"></tbody>
+    </table>
+    <h4 class="text-end mt-3">Total: ₹<span id="cart-total">0</span></h4>
+  </div>
+</div>
+
+<section class="cart-section container my-4">
+  <h2 class="text-center mb-4">Checkout</h2>
+  <form id="checkout-form">
+    <div class="mb-3">
+      <label for="name" class="form-label">Full Name:</label>
+      <input type="text" class="form-control" id="name" name="name" required />
+    </div>
+    <div class="mb-3">
+      <label for="address" class="form-label">Delivery Address:</label>
+      <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Payment Method:</label><br />
+      <input type="radio" id="online" name="paymentMethod" value="Online" checked/>
+      <label for="online">Online Payment</label> &nbsp;&nbsp;
+      <input type="radio" id="cod" name="paymentMethod" value="COD"/>
+      <label for="cod">Cash on Delivery</label>
+    </div>
+    <input type="hidden" id="cart-hidden" name="cart" />
+    <button type="submit" class="btn btn-primary">Place Order</button>
+  </form>
+</section>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  function loadCart() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const tbody = document.getElementById('cart-body');
+    const totalEl = document.getElementById('cart-total');
+    tbody.innerHTML = '';
+    let total = 0;
+
+    cart.forEach((item, index) => {
+      const subtotal = item.price * item.qty;
+      total += subtotal;
+      const row = `
+        <tr>
+          <td>${item.name}</td>
+          <td>${item.price.toFixed(2)}</td>
+          <td>
+            <input 
+              type="number" 
+              class="form-control quantity-input" 
+              data-id="${item.id}" 
+              value="${item.qty}" 
+              min="0.1" 
+              step="0.05"
+              style="width: 100px; margin: auto;"
+            />
+          </td>
+          <td>${subtotal.toFixed(2)}</td>
+          <td>
+            <button class="btn btn-danger btn-sm remove-btn" data-index="${index}">
+              Remove
+            </button>
+          </td>
+        </tr>
+      `;
+      tbody.innerHTML += row;
+    });
+
+    totalEl.textContent = total.toFixed(2);
+  }
+
+  function removeItem(index) {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.splice(index, 1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    loadCart();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadCart();
+
+    // Quantity input change
+    document.getElementById('cart-body').addEventListener('input', function (e) {
+      if (e.target.classList.contains('quantity-input')) {
+        const id = e.target.dataset.id;
+        const newQty = parseFloat(e.target.value);
+        if (newQty >= 0.1) {
+          const cart = JSON.parse(localStorage.getItem('cart')) || [];
+          const item = cart.find(i => i.id === id);
+          if (item) {
+            item.qty = newQty;
+            localStorage.setItem('cart', JSON.stringify(cart));
+            loadCart();
+          }
+        }
+      }
+    });
+
+    // Remove button
+    document.getElementById('cart-body').addEventListener('click', function (e) {
+      if (e.target.classList.contains('remove-btn')) {
+        const index = e.target.dataset.index;
+        removeItem(index);
+      }
+    });
+
+    // Checkout form handler
+    const form = document.getElementById('checkout-form');
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      if (cart.length === 0) return alert("Your cart is empty!");
+
+      const name = document.getElementById('name').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+      const totalAmount = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+      document.getElementById('cart-hidden').value = JSON.stringify(cart);
+
+      if (paymentMethod === 'Online') {
+        const saveCheckout = await fetch('/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, address, cart, total: totalAmount })
+        });
+
+        if (!saveCheckout.ok) return alert("Failed to save checkout data.");
+
+        const createOrderResponse = await fetch('/create-order', { method: 'POST' });
+        if (!createOrderResponse.ok) return alert("Failed to create Razorpay order.");
+        const orderData = await createOrderResponse.json();
+
+        const options = {
+          key: "<%= razorpayKeyId %>",
+          amount: orderData.amount,
+          currency: orderData.currency,
+          name: "VegBasket",
+          description: "Order Payment",
+          order_id: orderData.id,
+          prefill: {
+            name,
+            email: "customer@example.com",
+            contact: "9999999999"
+          },
+          theme: { color: "#3399cc" },
+          handler: async function (response) {
+            const saveResponse = await fetch('/verify-payment', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature
+              }),
+            });
+
+            if (saveResponse.ok) {
+              alert('Payment successful and order placed!');
+              localStorage.removeItem('cart');
+              window.location.href = '/my-orders';
+            } else {
+              alert('Payment succeeded but saving order failed.');
+            }
+          },
+          modal: {
+            ondismiss: function () {
+              alert('Payment popup closed.');
+            }
+          }
+        };
+
+        const rzp = new Razorpay(options);
+        rzp.open();
+
+      } else {
+        // COD flow
+        const response = await fetch('/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, address, cart, paymentMethod })
+        });
+
+        const result = await response.json();
+        if (response.ok && result.redirect) {
+          localStorage.removeItem('cart');
+          window.location.href = result.redirect;
+        } else {
+          alert('Failed to place order.');
+        }
+      }
+    });
+  });
+</script>
+
+<%- include('partials/footer') %>

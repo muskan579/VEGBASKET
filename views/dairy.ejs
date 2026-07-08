@@ -1,0 +1,88 @@
+<%- include('partials/header') %>
+
+<div class="container mt-4">
+  <h2 class="mb-4 text-center">Available Dairy Products</h2>
+
+  <div class="row g-4">
+    <% products.forEach(product => { %>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="card h-100">
+          <img src="<%= product.imageUrl %>" class="card-img-top" alt="<%= product.name %>">
+          <div class="card-body d-flex flex-column justify-content-between">
+            <h5 class="card-title"><%= product.name %></h5>
+            <p class="card-text">₹<%= product.price %> / <%= product.unit %></p>
+            <a href="#" class="btn btn-primary mt-auto add-to-cart"
+              data-id="<%= product._id %>"
+              data-name="<%= product.name %>"
+              data-price="<%= product.price %>">Add to Cart</a>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', function (e) {
+        e.preventDefault();
+        const id = this.dataset.id;
+        const name = this.dataset.name;
+        const price = parseFloat(this.dataset.price);
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const existingItem = cart.find(item => item.id === id);
+
+        if (existingItem) {
+          existingItem.qty += 1;
+        } else {
+          cart.push({ id, name, price, qty: 1 });
+        }
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        const toast = document.createElement("div");
+        toast.innerText = `${name} added to cart`;
+        toast.className = "toast fade show position-fixed m-2 p-3 rounded shadow-sm";
+        toast.style.backgroundColor = "#2c3e70";
+        toast.style.color = "white";
+        toast.style.bottom = "1rem";
+        toast.style.right = "1rem";
+        toast.style.maxWidth = "90vw";
+        toast.style.width = "fit-content";
+        toast.style.zIndex = "1055";
+        toast.setAttribute("role", "alert");
+        toast.setAttribute("aria-live", "assertive");
+        toast.setAttribute("aria-atomic", "true");
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+          toast.classList.remove("show");
+          toast.classList.add("hide");
+          setTimeout(() => toast.remove(), 300);
+        }, 2000);
+      });
+    });
+  });
+</script>
+
+<!-- Optional Toast Animation CSS -->
+<style>
+  .toast {
+    animation: slideIn 0.3s ease;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

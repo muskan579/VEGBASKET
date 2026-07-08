@@ -1,0 +1,63 @@
+<%- include('../partials/header') %>
+<div class="container my-5">
+  <h2 class="mb-4">All Products</h2>
+  <a href="/admin/products/new" class="btn btn-success mb-3">Add New Product</a>
+
+  <h4 class="text-primary">Vegetables</h4>
+  <table class="table table-bordered">
+    <thead class="table-light">
+      <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price (₹)</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% products.forEach(product => { %>
+        <% if (product.category === 'vegetable') { %>
+        <tr>
+          <td><%= product.name %></td>
+          <td><%= product.category %></td>
+          <td><%= product.price %></td>
+          <td>
+            <a href="/admin/products/<%= product._id %>/edit" class="btn btn-warning btn-sm">Edit</a>
+            <form action="/admin/products/<%= product._id %>/delete" method="POST" style="display:inline-block">
+              <button class="btn btn-danger btn-sm">Delete</button>
+            </form>
+          </td>
+        </tr>
+        <% } %>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <h4 class="mt-5 text-primary">Dairy Products</h4>
+  <table class="table table-bordered">
+    <thead class="table-light">
+      <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price (₹)</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% products.forEach(product => { %>
+        <% if (product.category === 'dairy') { %>
+        <tr>
+          <td><%= product.name %></td>
+          <td><%= product.category %></td>
+          <td><%= product.price %></td>
+          <td>
+            <a href="/admin/products/<%= product._id %>/edit" class="btn btn-warning btn-sm">Edit</a>
+            <form action="/admin/products/<%= product._id %>/delete" method="POST" style="display:inline-block">
+              <button class="btn btn-danger btn-sm">Delete</button>
+            </form>
+          </td>
+        </tr>
+        <% } %>
+      <% }) %>
+    </tbody>
+  </table>
+</div>

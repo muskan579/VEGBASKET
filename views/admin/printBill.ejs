@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Order Bill</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fff;
+      margin: 40px auto;
+      max-width: 600px;
+      padding: 20px;
+      color: #222;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #2c3e50;
+      font-weight: 700;
+    }
+    p {
+      font-size: 1.1em;
+      margin: 5px 0;
+      color: #444;
+    }
+    strong {
+      color: #2c3e50;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 25px;
+      font-size: 1em;
+    }
+    th, td {
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #2c3e50;
+      color: white;
+      font-weight: 600;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    .total-row td {
+      font-weight: 700;
+      font-size: 1.1em;
+      text-align: right;
+    }
+    .print-btn {
+      display: block;
+      margin: 30px auto 0;
+      padding: 12px 25px;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .print-btn:hover {
+      background-color: #1e8449;
+    }
+    @media print {
+      .print-btn {
+        display: none;
+      }
+      body {
+        box-shadow: none;
+        margin: 0;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h2>Order Bill</h2>
+  <p><strong>Customer Name:</strong> <%= order.userId.username %></p>
+  <p><strong>Address:</strong> <%= order.address %></p>
+  <p><strong>Date:</strong> <%= order.createdAt.toDateString() %></p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Price (₹)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% order.items.forEach(item => { %>
+        <tr>
+          <td><%= item.name %></td>
+          <td><%= item.quantity || item.qty %></td>
+          <td>₹<%= item.price * (item.quantity || item.qty) %></td>
+        </tr>
+      <% }) %>
+      <tr class="total-row">
+        <td colspan="2">Total</td>
+        <td>₹<%= order.total %></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button class="print-btn" onclick="window.print()">🖨️ Print</button>
+</body>
+</html>

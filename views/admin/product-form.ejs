@@ -1,0 +1,52 @@
+<%- include('../partials/header') %>
+<div class="container my-5">
+  <h2 class="text-center mb-4">Add New Product</h2>
+
+  <!-- Show Validation Errors -->
+  <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        <% errors.forEach(err => { %>
+          <li><%= err.msg %></li>
+        <% }) %>
+      </ul>
+    </div>
+  <% } %>
+
+  <form action="/admin/products" method="POST" enctype="multipart/form-data">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Name</label>
+        <input type="text" name="name" class="form-control" required />
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Category</label>
+        <select name="category" class="form-control" required>
+          <option value="vegetable">Vegetable</option>
+          <option value="dairy">Dairy</option>
+        </select>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Price (₹)</label>
+        <input type="number" name="price" class="form-control" required />
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Unit</label>
+        <input type="text" name="unit" class="form-control" placeholder="e.g., kg, liter, bunch, piece" required />
+      </div>
+
+      <div class="col-12 mb-4">
+        <label class="form-label">Product Image</label>
+        <input type="file" name="image" class="form-control" accept="image/*" required />
+      </div>
+
+      <div class="col-12 text-center">
+        <button type="submit" class="btn btn-primary px-4">Save Product</button>
+      </div>
+    </div>
+  </form>
+</div>
+

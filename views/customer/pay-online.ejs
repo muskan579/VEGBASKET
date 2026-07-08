@@ -1,0 +1,47 @@
+<%- include('../partials/header') %>
+
+<div class="container text-center my-5">
+  <h2>Pay ₹<%= total %> Online</h2>
+  <button id="rzp-button" class="btn btn-success mt-3">Pay Now</button>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  document.getElementById("rzp-button").onclick = async function () {
+    const order = await fetch("/create-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" }
+    }).then(res => res.json());
+
+    const options = {
+      key: "<%= razorpayKeyId %>",
+      amount: order.amount,
+      currency: "INR",
+      name: "VegBasket",
+      description: "Online Order Payment",
+      order_id: order.id,
+      handler: async function (response) {
+        const res = await fetch("/verify-payment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(response)
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert("Payment Successful!");
+          window.location.href = "/my-orders";
+        } else {
+          alert("Payment failed: " + data.message);
+        }
+      },
+      theme: {
+        color: "#3399cc"
+      }
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+  };
+</script>
+
+<%- include('../partials/footer') %>
