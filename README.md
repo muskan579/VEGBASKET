@@ -4,12 +4,6 @@
 
 ---
 
-## 🔗 Live Demo
-
-👉 [Visit VegBasket](https://vegbasket-czog.onrender.com/)  
-
----
-
 ## 📸 Screenshots
 
 | User View | Admin Panel |
